@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson4</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="cart">
+        <span class="cart__title" id="cart__title">the shopping cart is empty</span>
+        <div class="cart__body" id="cart__body" style="display: none;"></div>
+    </div>
+    <script>
+        "use strict";
+        let objectProductsCart = [];
+        const objectProductsArray = [
+            {
+                title: "MANGO PEOPLE T-SHIRT",
+                image: "product1.jpg",
+                price: 52
+            }, {
+                title: "MANGO PEOPLE T-SHIRT",
+                image: "product2.jpg",
+                price: 46
+            }, {
+                title: "MANGO PEOPLE T-SHIRT",
+                image: "product3.jpg",
+                price: 72
+            }, {
+                title: "MANGO PEOPLE T-SHIRT",
+                image: "product4.jpg",
+                price: 123
+            }, {
+                title: "MANGO PEOPLE T-SHIRT",
+                image: "product5.jpg",
+                price: 65
+            }, {
+                title: "MANGO PEOPLE T-SHIRT",
+                image: "product6.jpg",
+                price: 23
+            }
+        ];
+
+        function printProduct() {
+            document.write(`<div class="product__wrapper">`);
+            objectProductsArray.forEach(product => {
+            document.write(`
+            <div class="product__item">
+                <img src="image/${product.image}" alt="${product.title}" class="product__image">
+                <h3 class="product__title">${product.title}</h3>                                         
+                <div class="product__price">${product.price}</div>
+                <a onclick="addCart(this)" class="product__buy">Add in Cart</a>
+            </div>
+            `);
+            });
+            document.write(`</div>`);
+        }
+
+        function addCart(e) {
+            let block = e.parentElement;
+            let titleProduct = block.getElementsByClassName("product__title")[0].innerHTML;
+            let imageProduct = block.getElementsByClassName("product__image")[0].getAttribute('src');
+            let priceProduct = block.getElementsByClassName("product__price")[0].innerHTML;
+            let objProduct = {
+                title: titleProduct,
+                image: imageProduct,
+                price: priceProduct
+            };
+            objectProductsCart.push(objProduct)
+            let sum = sumCart(objectProductsCart);
+
+            printCart(objectProductsCart, sum);
+        }
+
+        function sumCart(obj) {
+            let sumAdd = 0;
+            obj.forEach(product => {
+                sumAdd += +product.price;
+            });
+            return sumAdd;
+        }
+
+        function printCart(obj, sum) {
+            document.getElementById("cart__title").innerHTML = `The cost of the basket - ${sum}$`;
+            let strForHtml = '';
+            obj.forEach(product => {
+                strForHtml += `
+                    <div class="cart__item">
+                        <img src="${product.image}" alt="${product.title}" class="cart__image">
+                        <div class="cart__content">
+                        <h3 class="cart__h3">${product.title}</h3>                                         
+                        <div class="cart__price">${product.price}$</div>
+                        </div>
+                    </div>
+                `;
+            });
+            document.getElementById("cart__body").innerHTML = strForHtml;
+        }
+
+        let btn = document.getElementById("cart__title");
+        let cart = document.getElementById("cart__body");
+        
+        btn.onclick = function () {
+            let display = cart.style.display;
+
+            if(display=='none'){
+                cart.style.display='block';
+            }else{
+                cart.style.display='none';
+            }
+        }
+
+        printProduct();
+    </script>
+
+    <script src="main.js"></script>
+</body>
+</html>
